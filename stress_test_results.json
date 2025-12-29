@@ -1,0 +1,258 @@
+{
+  "Data Validation": {
+    "news_articles": {
+      "total": 347,
+      "recent_7d": 328,
+      "status": "\u2713 OK"
+    },
+    "conflict_events": {
+      "total": 250,
+      "recent_30d": 250,
+      "status": "\u2713 OK"
+    },
+    "economic_indicators": {
+      "total": 20,
+      "types": [
+        "('INFLATION',)",
+        "('FOREIGN_RESERVES',)",
+        "('GDP_GROWTH',)",
+        "('UNEMPLOYMENT',)"
+      ],
+      "status": "\u2713 OK"
+    }
+  },
+  "News Signal Analysis": {
+    "signal_score": 57.926829268292686,
+    "article_count": 328,
+    "negative_count": 52,
+    "negative_ratio": 0.16,
+    "top_keywords": [
+      [
+        "protest",
+        18
+      ],
+      [
+        "attack",
+        11
+      ],
+      [
+        "war",
+        10
+      ],
+      [
+        "violence",
+        5
+      ],
+      [
+        "threat",
+        5
+      ]
+    ],
+    "issues": [
+      "\u2713 No issues detected"
+    ],
+    "recommendations": [
+      "News signal appears reasonable"
+    ]
+  },
+  "Conflict Signal Analysis": {
+    "signal_score": 52.718,
+    "event_count": 250,
+    "total_fatalities": 2,
+    "avg_fatalities": 0.01,
+    "event_type_distribution": {
+      "Strategic developments": 232,
+      "Protests": 6,
+      "Violence against civilians": 6,
+      "Battles": 5,
+      "Riots": 1
+    },
+    "fatality_by_type": {
+      "Strategic developments": 1,
+      "Violence against civilians": 1,
+      "Protests": 0,
+      "Battles": 0,
+      "Riots": 0
+    },
+    "issues": [
+      "\u2713 No issues detected"
+    ],
+    "recommendations": [
+      "High event count but moderate score - frequency weight may need adjustment"
+    ]
+  },
+  "Economic Signal Analysis": {
+    "signal_score": 19.0,
+    "gdp_score": 15,
+    "inflation_score": 25,
+    "unemployment_score": 15,
+    "indicators_available": [
+      "GDP_GROWTH",
+      "INFLATION",
+      "UNEMPLOYMENT",
+      "FOREIGN_RESERVES"
+    ],
+    "indicator_values": {
+      "GDP_GROWTH": [
+        {
+          "year": 2024,
+          "value": 6.49476552383821
+        }
+      ],
+      "INFLATION": [
+        {
+          "year": 2024,
+          "value": 4.95303550973656
+        }
+      ],
+      "UNEMPLOYMENT": [
+        {
+          "year": 2024,
+          "value": 4.202
+        }
+      ],
+      "FOREIGN_RESERVES": [
+        {
+          "year": 2024,
+          "value": 643042560625.541
+        }
+      ]
+    },
+    "issues": [
+      "\u2713 No issues detected"
+    ],
+    "recommendations": [
+      "Extreme economic score - verify indicator thresholds"
+    ]
+  },
+  "Edge Cases": {
+    "tested_cases": {
+      "no_recent_data": "What if no data in recent window?",
+      "extreme_values": "What if extreme outlier values?",
+      "missing_signals": "What if some signals unavailable?",
+      "all_zeros": "What if all metrics are zero?",
+      "data_sparsity": "What if very sparse data?"
+    },
+    "results": {
+      "zero_handling": "PASS",
+      "boundaries": "PASS"
+    },
+    "recommendations": [
+      "Add explicit score clamping (0-100) in all signal calculations",
+      "Implement confidence scores when data is sparse",
+      "Consider time-decay for old data points"
+    ]
+  },
+  "Weight Sensitivity": {
+    "current_score": 38.37,
+    "current_weights": {
+      "news_signal": 0.2,
+      "conflict_signal": 0.4,
+      "economic_signal": 0.3,
+      "government_signal": 0.1
+    },
+    "scenarios": [
+      {
+        "scenario": "Conflict-Heavy",
+        "score": 41.22,
+        "diff": 2.85,
+        "weights": {
+          "news": 0.1,
+          "conflict": 0.6,
+          "economic": 0.2,
+          "government": 0.1
+        }
+      },
+      {
+        "scenario": "Balanced",
+        "score": 32.41,
+        "diff": -5.96,
+        "weights": {
+          "news": 0.25,
+          "conflict": 0.25,
+          "economic": 0.25,
+          "government": 0.25
+        }
+      },
+      {
+        "scenario": "Economic-Heavy",
+        "score": 31.37,
+        "diff": -7.0,
+        "weights": {
+          "news": 0.15,
+          "conflict": 0.25,
+          "economic": 0.5,
+          "government": 0.1
+        }
+      },
+      {
+        "scenario": "News-Heavy",
+        "score": 42.79,
+        "diff": 4.42,
+        "weights": {
+          "news": 0.4,
+          "conflict": 0.3,
+          "economic": 0.2,
+          "government": 0.1
+        }
+      }
+    ],
+    "max_variation": 7.0,
+    "sensitivity": "Low",
+    "recommendations": [
+      "Low sensitivity - score is stable across weight variations"
+    ]
+  },
+  "Explainability Check": {
+    "manual_calculation": 38.37,
+    "reported_score": 38.37,
+    "difference": 0.003,
+    "accurate": true,
+    "issues": [
+      "\u2713 No issues detected"
+    ],
+    "signal_breakdown": {
+      "news": "57.93 \u00d7 0.2 = 11.59",
+      "conflict": "52.72 \u00d7 0.4 = 21.09",
+      "economic": "19.00 \u00d7 0.3 = 5.70",
+      "government": "0.00 \u00d7 0.1 = 0.00"
+    }
+  },
+  "Temporal Behavior": {
+    "historical_count": 10,
+    "score_range": [
+      35.11,
+      38.37
+    ],
+    "avg_change": 0.36,
+    "max_change": 3.26,
+    "volatility": "Low",
+    "recommendations": [
+      "Volatility is reasonable",
+      "Consider trend analysis for pattern detection"
+    ]
+  },
+  "Score Distribution": {
+    "overall_score": 38.37,
+    "contributions": {
+      "news": 11.59,
+      "conflict": 21.09,
+      "economic": 5.7,
+      "government": 0.0
+    },
+    "percentages": {
+      "news": 30.2,
+      "conflict": 55.0,
+      "economic": 14.9,
+      "government": 0.0
+    },
+    "dominant_signal": "conflict",
+    "dominant_percentage": 55.0,
+    "issues": [
+      "\u2139 Government signal is zero (expected in Phase 1)"
+    ],
+    "recommendations": [
+      "Distribution is balanced"
+    ]
+  }
+}
