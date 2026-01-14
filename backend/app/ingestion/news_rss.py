@@ -13,8 +13,9 @@ logger = setup_logger(__name__)
 class NewsRSSIngestion:
     """Fetches news from RSS feeds"""
     
-    # India-focused RSS feeds
+    # India-focused and international RSS feeds
     RSS_FEEDS = [
+        # India sources
         {
             "url": "https://www.thehindu.com/news/national/feeder/default.rss",
             "source": "The Hindu - National",
@@ -39,6 +40,96 @@ class NewsRSSIngestion:
             "url": "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml",
             "source": "BBC India",
             "country": "IND"
+        },
+        # Pakistan sources
+        {
+            "url": "https://www.dawn.com/feeds/home",
+            "source": "Dawn Pakistan",
+            "country": "PAK"
+        },
+        {
+            "url": "https://tribune.com.pk/feed",
+            "source": "Express Tribune Pakistan",
+            "country": "PAK"
+        },
+        {
+            "url": "https://www.geo.tv/rss/1/1",
+            "source": "Geo News Pakistan",
+            "country": "PAK"
+        },
+        {
+            "url": "https://nation.com.pk/rss",
+            "source": "The Nation Pakistan",
+            "country": "PAK"
+        },
+        {
+            "url": "https://arynews.tv/feed/",
+            "source": "ARY News Pakistan",
+            "country": "PAK"
+        },
+        {
+            "url": "https://www.thenews.com.pk/rss",
+            "source": "The News Pakistan",
+            "country": "PAK"
+        },
+        # China sources
+        {
+            "url": "https://www.scmp.com/rss/91/feed",
+            "source": "South China Morning Post",
+            "country": "CHN"
+        },
+        # Bangladesh sources
+        {
+            "url": "https://www.dhakatribune.com/feed",
+            "source": "Dhaka Tribune",
+            "country": "BGD"
+        },
+        {
+            "url": "https://www.thedailystar.net/frontpage/rss.xml",
+            "source": "The Daily Star Bangladesh",
+            "country": "BGD"
+        },
+        # Russia sources
+        {
+            "url": "https://www.themoscowtimes.com/rss/news",
+            "source": "Moscow Times",
+            "country": "RUS"
+        },
+        {
+            "url": "https://tass.com/rss/v2.xml",
+            "source": "TASS Russian News",
+            "country": "RUS"
+        },
+        {
+            "url": "https://www.rt.com/rss/",
+            "source": "RT News",
+            "country": "RUS"
+        },
+        {
+            "url": "https://ria.ru/export/rss2/archive/index.xml",
+            "source": "RIA Novosti",
+            "country": "RUS"
+        },
+        # International sources for broader coverage
+        {
+            "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+            "source": "BBC World",
+            "country": "GLOBAL"
+        },
+        {
+            "url": "http://rss.cnn.com/rss/cnn_world.rss",
+            "source": "CNN World",
+            "country": "GLOBAL"
+        },
+        {
+            "url": "https://www.aljazeera.com/xml/rss/all.xml",
+            "source": "Al Jazeera",
+            "country": "GLOBAL"
+        },
+        {
+            "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+            "source": "New York Times World",
+            "country": "GLOBAL"
         },
     ]
     
@@ -84,10 +175,12 @@ class NewsRSSIngestion:
         """Extract country mentions from text (basic implementation)"""
         # Simple keyword matching for Phase 1
         country_keywords = {
-            "IND": ["india", "indian", "delhi", "mumbai", "bangalore", "kolkata"],
-            "PAK": ["pakistan", "islamabad", "karachi"],
-            "CHN": ["china", "chinese", "beijing"],
-            "USA": ["america", "united states", "washington"],
+            "IND": ["india", "indian", "delhi", "mumbai", "bangalore", "kolkata", "new delhi"],
+            "PAK": ["pakistan", "pakistani", "islamabad", "karachi", "lahore"],
+            "CHN": ["china", "chinese", "beijing", "shanghai", "hong kong"],
+            "USA": ["america", "american", "united states", "washington", "new york", "u.s.", "us "],
+            "RUS": ["russia", "russian", "moscow", "kremlin", "putin"],
+            "BGD": ["bangladesh", "bangladeshi", "dhaka", "bengali"],
         }
         
         text_lower = text.lower()
@@ -105,11 +198,23 @@ class NewsRSSIngestion:
             # Parse published date
             published_date = self.parse_date(article.get("published", ""))
             
-            # Extract countries mentioned
+            # Extract countries mentioned in text
             full_text = f"{article['title']} {article.get('summary', '')}"
             countries = self.extract_countries(full_text)
-            if default_country not in countries:
-                countries.append(default_country)
+            
+            # For country-specific sources, ALWAYS tag with that country
+            if default_country != "GLOBAL" and default_country != "IND":
+                # Force-tag articles from country-specific sources
+                if default_country not in countries:
+                    countries.append(default_country)
+            elif default_country == "IND" or default_country == "GLOBAL":
+                # For India and Global sources, use keyword extraction
+                if default_country not in countries and default_country != "GLOBAL":
+                    countries.append(default_country)
+            
+            # Ensure we have at least one country
+            if not countries:
+                countries = ["IND"]  # Default fallback
             
             # Create document
             doc = create_news_article_document(

@@ -61,9 +61,11 @@ backend/
 - `GET /api/v1/signals/{country_code}` - Get signal breakdown
 - `GET /api/v1/alerts` - Get recent alerts
 
-## Roadmap
+## Commands for data processing
 
-- [ ] Phase 1: Data ingestion and scoring (Current)
-- [ ] Phase 2: Frontend dashboard with React
-- [ ] Phase 3: AI assistant with Gemini + LangChain
-- [ ] Phase 4: Authentication and multi-user support
+python run_pipeline.py --country IND   # India
+python run_pipeline.py --country USA   # United States
+python run_pipeline.py --country CHN   # China
+python run_pipeline.py --country RUS   # Russia
+python run_pipeline.py --country PAK   # Pakistan
+python run_pipeline.py --country BGD   # Bangladesh
