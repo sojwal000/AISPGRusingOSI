@@ -18,12 +18,22 @@ requests==2.31.0
 feedparser==6.0.11
 python-dateutil==2.8.2
 
-# AI/ML - Phase 2
+# AI/ML - Phase 2 Core
 transformers==4.36.0
 torch==2.1.0
 sentencepiece==0.1.99
 accelerate==0.25.0
 scikit-learn==1.4.0
+
+# AI/ML - Phase 3 Advanced
+sentence-transformers==2.2.2  # Semantic embeddings for clustering
+bertopic==0.16.0              # Topic modeling
+prophet==1.1.5                # Time series forecasting
+hdbscan==0.8.33               # Density-based clustering
+umap-learn==0.5.5             # Dimensionality reduction for BERTopic
+
+# NLP - Phase 2
+spacy==3.7.2                  # Named Entity Recognition
 
 # Phase 2: AI Explanations (Optional)
 google-generativeai==0.3.2  # Gemini API for natural language explanations
